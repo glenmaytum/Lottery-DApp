@@ -17,5 +17,4 @@ Show participant how many times they have entered - Filter address based on part
 Add chances of winning % 
 
 Testing with Chai
-
-test chai out
+test if git works properly now
