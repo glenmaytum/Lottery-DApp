@@ -14,7 +14,13 @@ function App() {
 
   const [balance, setBalance] = useState(null);
   const [account, setAccount] = useState(null);
-  const [entrantsData, setEntrantsData] = useState({});
+  const [entrantsData, setEntrantsData] = useState({
+    managerAddress: "",
+    totalNumberOfEntries: 0,
+    allAddresses: [],
+    numberOfUniqueAddresses: 0,
+    uniqueAddressesAndTimesEntered: 0,
+  });
 
   // Testing if the current account is the contract's manager or not
   const isManager = account === entrantsData.managerAddress;
@@ -209,6 +215,31 @@ function App() {
             `You (${account}) have entered this lottery ${
               entrantsData.uniqueAddressesAndTimesEntered[account] || 0
             } times`}
+        </div>
+        <button
+          class="btn btn-primary"
+          onClick={enterLottery}
+          disabled={!canConnectToContract}
+        >
+          Enter Lottery
+        </button>
+        <div className="w-full shadow stats">
+          <div className="stat place-items-center place-content-center">
+            <div className="stat-title uppercase">TOTAL PLAYERS</div>
+            <div className="stat-value">
+              {canConnectToContract && entrantsData.numberOfUniqueAddresses}
+            </div>
+          </div>
+          <div className="stat place-items-center place-content-center">
+            <div className="stat-title">Jackpot</div>
+            <div className="stat-value text-success uppercase	">{`${balance} eth`}</div>
+          </div>
+          <div className="stat place-items-center place-content-center">
+            <div className="stat-title uppercase	">Total Entries</div>
+            <div className="stat-value text-error">
+              {canConnectToContract && entrantsData.totalNumberOfEntries}
+            </div>
+          </div>
         </div>
       </div>
     </>
