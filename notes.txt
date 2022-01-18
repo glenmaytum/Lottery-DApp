@@ -1,0 +1,20 @@
+TODO
+
+Ensure that screen refreshes after change in account or network. ✓
+
+Create Admin Panel - get contract owner address and compare ✓
+
+Admin pick winner button - admin only condition, onClick button
+
+Show number of total entries in admin - return arr length ✓
+
+Make so only admin can see balance - add admin only condition 
+
+Show number of unique participants who have entered - reduce arr of addresses to unique ones and return length ✓
+
+Show participant how many times they have entered - Filter address based on participant address and return number (Can also show ETH value here maybe) ✓
+
+Add chances of winning % 
+
+Testing with Chai
+
