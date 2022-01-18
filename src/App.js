@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import Web3 from "web3";
 import detectEthereumProvider from "@metamask/detect-provider";
@@ -7,6 +7,7 @@ import { loadContract } from "./utils/load-contract";
 function App() {
   const [web3Api, setWeb3Api] = useState({
     provider: null,
+    isProviderLoaded: false,
     web3: null,
     contract: null,
   });
@@ -34,17 +35,22 @@ function App() {
   useEffect(() => {
     const loadProvider = async () => {
       const provider = await detectEthereumProvider();
-      const contract = await loadContract("Lottery", provider);
-      setAccountListener(provider);
 
       if (provider) {
+        const contract = await loadContract("Lottery", provider);
+        setAccountListener(provider);
+
         setWeb3Api({
-          ...web3Api,
           web3: new Web3(provider),
           provider,
           contract,
+          isProviderLoaded: true,
         });
       } else {
+        setWeb3Api((web3Api) => ({
+          ...web3Api,
+          isProviderLoaded: true,
+        }));
         console.error("Please, install Metamask.");
       }
     };
@@ -111,7 +117,7 @@ function App() {
     };
 
     web3Api.web3 && getEntrantsData();
-  }, [web3Api.contract, shouldReload]);
+  }, [web3Api.contract, shouldReload, web3Api.web3]);
 
   const pickWinner = async () => {
     const { contract } = web3Api;
@@ -128,16 +134,8 @@ function App() {
     reloadEffect();
   };
 
-  // const pickWinner = useCallback(async () => {
-  //   const { contract, web3 } = web3Api;
-  //   await contract.methods.pickWinner().send({
-  //     from: contract.address,
-  //   });
-  //   reloadEffect();
-  // }, [web3Api, account]);
-
   // Enter the lottery by transferring 0.1 eth to contract
-  const enterLottery = useCallback(async () => {
+  const enterLottery = async () => {
     const { contract, web3 } = web3Api;
     await contract.sendTransaction({
       from: account,
@@ -145,21 +143,21 @@ function App() {
       value: web3.utils.toWei("0.1", "ether"),
     });
     reloadEffect();
-  }, [web3Api, account]);
+  };
 
   return (
     <>
-      <div className="lottery-wrapper">
-        <div className="lottery">
-          <div className="is-flex is-align-items-center">
+      <div>
+        <div>
+          <div>
+            <h1 className="text-3xl font-bold underline">Hello world!</h1>
             <span>
-              <strong className="mr-2">Account: </strong>
+              <strong>Account: </strong>
             </span>
             {account ? (
               <div>{account}</div>
             ) : (
               <button
-                className="button is-small"
                 onClick={() =>
                   web3Api.provider.request({ method: "eth_requestAccounts" })
                 }
@@ -177,16 +175,11 @@ function App() {
           <div className="balance-view is-size-3 my-4">
             Current Balance: <strong>{balance}</strong> ETH
           </div>
-          <button
-            className="button is-link mr-2"
-            onClick={enterLottery}
-            disabled={!canConnectToContract}
-          >
+          <button onClick={enterLottery} disabled={!canConnectToContract}>
             Enter Lottery!
           </button>
           {isManager ? (
             <button
-              className="button is-primary"
               disabled={!canConnectToContract}
               onClick={() => console.log(web3Api.contract)}
             >
@@ -196,11 +189,7 @@ function App() {
             ""
           )}
           {isManager ? (
-            <button
-              className="button is-primary"
-              disabled={!canConnectToContract}
-              onClick={pickWinner}
-            >
+            <button disabled={!canConnectToContract} onClick={pickWinner}>
               Pick Winner
             </button>
           ) : (
