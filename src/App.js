@@ -3,6 +3,8 @@ import "./App.css";
 import Web3 from "web3";
 import detectEthereumProvider from "@metamask/detect-provider";
 import { loadContract } from "./utils/load-contract";
+import Layout from "./components/ui/layout";
+import Dashboard from "./components/ui/dashboard";
 
 function App() {
   const [web3Api, setWeb3Api] = useState({
@@ -153,95 +155,9 @@ function App() {
 
   return (
     <>
-      <div>
-        <div>
-          <div>
-            <h1 className="text-3xl font-bold underline">Hello world!</h1>
-            <span>
-              <strong>Account: </strong>
-            </span>
-            {account ? (
-              <div>{account}</div>
-            ) : (
-              <button
-                onClick={() =>
-                  web3Api.provider.request({ method: "eth_requestAccounts" })
-                }
-              >
-                Connect Wallet
-              </button>
-            )}
-          </div>
-
-          {canConnectToContract && (
-            <div className="balance-view is-size-3 my-4">
-              Contract Address: {web3Api.contract.address}
-            </div>
-          )}
-          <div className="balance-view is-size-3 my-4">
-            Current Balance: <strong>{balance}</strong> ETH
-          </div>
-          <button onClick={enterLottery} disabled={!canConnectToContract}>
-            Enter Lottery!
-          </button>
-          {isManager ? (
-            <button
-              disabled={!canConnectToContract}
-              onClick={() => console.log(web3Api.contract)}
-            >
-              Random
-            </button>
-          ) : (
-            ""
-          )}
-          {isManager ? (
-            <button disabled={!canConnectToContract} onClick={pickWinner}>
-              Pick Winner
-            </button>
-          ) : (
-            ""
-          )}
-          {entrantsData.uniqueAddressesAndTimesEntered &&
-            Object.entries(entrantsData.uniqueAddressesAndTimesEntered).map(
-              ([address, timesEntered], i) => (
-                <div key={i}>
-                  Address {address}, has enthered the lottery {timesEntered}{" "}
-                  times
-                </div>
-              )
-            )}
-          {canConnectToContract &&
-            entrantsData.uniqueAddressesAndTimesEntered &&
-            `You (${account}) have entered this lottery ${
-              entrantsData.uniqueAddressesAndTimesEntered[account] || 0
-            } times`}
-        </div>
-        <button
-          class="btn btn-primary"
-          onClick={enterLottery}
-          disabled={!canConnectToContract}
-        >
-          Enter Lottery
-        </button>
-        <div className="w-full shadow stats">
-          <div className="stat place-items-center place-content-center">
-            <div className="stat-title uppercase">TOTAL PLAYERS</div>
-            <div className="stat-value">
-              {canConnectToContract && entrantsData.numberOfUniqueAddresses}
-            </div>
-          </div>
-          <div className="stat place-items-center place-content-center">
-            <div className="stat-title">Jackpot</div>
-            <div className="stat-value text-success uppercase	">{`${balance} eth`}</div>
-          </div>
-          <div className="stat place-items-center place-content-center">
-            <div className="stat-title uppercase	">Total Entries</div>
-            <div className="stat-value text-error">
-              {canConnectToContract && entrantsData.totalNumberOfEntries}
-            </div>
-          </div>
-        </div>
-      </div>
+      <Layout>
+        <Dashboard />
+      </Layout>
     </>
   );
 }
