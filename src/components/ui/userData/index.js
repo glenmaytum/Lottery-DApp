@@ -1,4 +1,5 @@
 import TableHeader from "../../common/table/headers";
+import { useEffect, useState } from "react";
 import TableRow from "../../common/table/rows";
 import useSortableData from "../hooks/useSortedData";
 import { FiChevronDown } from "react-icons/fi";
@@ -54,109 +55,69 @@ export default function UserData() {
       chanceOfWin: 33.3,
     },
   ];
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    window.screen.width <= 760 ? setIsMobile(true) : setIsMobile(false);
+  }, [window.screen.width]);
+
+  function detectWindowSize() {
+    window.innerWidth <= 760 ? setIsMobile(true) : setIsMobile(false);
+  }
+
+  window.onresize = detectWindowSize;
+
+  console.log(isMobile);
 
   const { items, requestSort } = useSortableData(data);
 
   return (
-    <>
-      <section className="align-middle inline-block min-w-full shadow overflow-hidden sm:rounded-lg border-b border-gray-200">
-        <table className="min-w-full table-auto">
-          <thead>
-            <tr>
+    <table className="w-full flex flex-row flex-no-wrap sm:bg-white rounded-lg overflow-hidden sm:shadow-lg my-5 border-collapse">
+      <thead className="text-white">
+        {items.map((item, i) => {
+          return (
+            <tr className="bg-blue-400 flex flex-col flex-no wrap sm:table-row rounded-l-lg sm:rounded-none mb-2 sm:mb-0">
               <TableHeader
                 heading={"address"}
                 requestSort={requestSort}
                 searchCriteria={"address"}
-                sortIcon={true}
               />
               <TableHeader
-                heading={"times entered"}
+                heading={"times played "}
                 requestSort={requestSort}
                 searchCriteria={"timesEntered"}
-                sortIcon={true}
               />
               <TableHeader
                 heading={"eth wagered"}
                 requestSort={requestSort}
                 searchCriteria={"ethWagered"}
-                sortIcon={true}
               />
               <TableHeader
-                heading={"change of winning"}
+                heading={"Win % "}
                 requestSort={requestSort}
                 searchCriteria={"chanceOfWin"}
-                sortIcon={true}
+                width={true}
               />
-              <TableHeader heading={<FiChevronDown />} />
             </tr>
-          </thead>
-          <tbody className="bg-white">
-            {items.map((item, i) => {
-              return (
-                <TableRow
-                  key={i}
-                  address={item.address}
-                  timesEntered={item.timesEntered}
-                  ethWagered={item.ethWagered}
-                  chanceOfWin={item.chanceOfWin}
-                />
-              );
-            })}
-          </tbody>
-        </table>
-      </section>
-      <div class="container">
-        <table class="w-full flex flex-row flex-no-wrap sm:bg-white rounded-lg overflow-hidden sm:shadow-lg my-5">
-          <thead class="text-white">
-            <tr class="bg-blue-400 flex flex-col flex-no wrap sm:table-row rounded-l-lg sm:rounded-none mb-2 sm:mb-0">
-              <th class="p-3 text-left">Name</th>
-              <th class="p-3 text-left">Email</th>
-              <th class="p-3 text-left">ADDRESS</th>
-              <th class="p-3 text-left" width="110px">
-                Actions
-              </th>
-            </tr>
-            <tr class="bg-blue-400 flex flex-col flex-no wrap sm:table-row rounded-l-lg sm:rounded-none mb-2 sm:mb-0">
-              <th class="p-3 text-left">Name</th>
-              <th class="p-3 text-left">Email</th>
-              <th class="p-3 text-left">ADDRESS</th>
-              <th class="p-3 text-left" width="110px">
-                Actions
-              </th>
-            </tr>
-          </thead>
-          <tbody class="flex-1 sm:flex-none">
-            <tr class="flex flex-col flex-no wrap sm:table-row mb-2 sm:mb-0">
-              <td class="border-grey-light border hover:bg-gray-100 p-3">
-                John Covv
-              </td>
-              <td class="border-grey-light border hover:bg-gray-100 p-3 truncate">
-                contato@johncovv.com
-              </td>
-              <td class="border-grey-light border hover:bg-gray-100 p-3 truncate">
-                getgrhrwhrhrwhwrhwrhrthwrhjjbbje
-              </td>
-              <td class="border-grey-light border hover:bg-gray-100 p-3 text-red-400 hover:text-red-600 hover:font-medium cursor-pointer">
-                Delete
-              </td>
-            </tr>
-            <tr class="flex flex-col flex-no wrap sm:table-row mb-2 sm:mb-0">
-              <td class="border-grey-light border hover:bg-gray-100 p-3">
-                Michael Jackson
-              </td>
-              <td class="border-grey-light border hover:bg-gray-100 p-3 truncate">
-                m_jackson@mail.com
-              </td>
-              <td class="border-grey-light border hover:bg-gray-100 p-3 truncate">
-                jetjetyw5eyvw45ycww4yc4y46v{" "}
-              </td>
-              <td class="border-grey-light border hover:bg-gray-100 p-3 text-red-400 hover:text-red-600 hover:font-medium cursor-pointer">
-                Delete
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </>
+          );
+        })}
+      </thead>
+      <tbody className="flex-1 sm:flex-none ">
+        {items.map((item, i) => {
+          return (
+            <TableRow
+              key={i}
+              address={
+                isMobile
+                  ? item.address.slice(0, 8) + "..." + item.address.slice(-8)
+                  : item.address
+              }
+              timesEntered={item.timesEntered}
+              ethWagered={item.ethWagered}
+              chanceOfWin={item.chanceOfWin}
+            />
+          );
+        })}
+      </tbody>
+    </table>
   );
 }

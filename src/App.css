@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  box-sizing: border-box;
+}
+
 @media (min-width: 640px) {
   table {
     display: inline-table !important;
@@ -18,4 +22,9 @@ td:not(:last-child) {
 
 th:not(:last-child) {
   border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+}
+
+.heightFix {
+  min-height: 50px !important;
+  max-height: 50px !important;
 }
