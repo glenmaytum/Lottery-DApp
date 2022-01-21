@@ -12,6 +12,7 @@ export default function TableRow({
       <Cell cellData={timesEntered} />
       <Cell cellData={ethWagered} />
       <Cell cellData={chanceOfWin} />
+      <Cell />
     </tr>
   );
 }

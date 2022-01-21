@@ -1,6 +1,7 @@
-import { useState, useMemo } from "react";
 import TableHeader from "../../common/table/headers";
 import TableRow from "../../common/table/rows";
+import useSortableData from "../hooks/useSortedData";
+import { FiChevronDown } from "react-icons/fi";
 
 export default function UserData() {
   const data = [
@@ -54,71 +55,108 @@ export default function UserData() {
     },
   ];
 
-  const [sortedField, setSortedField] = useState(null);
-  const [sortConfig, setSortConfig] = useState(null);
-
-  const requestSort = (key) => {
-    let direction = "ascending";
-    if (sortConfig.key === key && sortConfig.direction === "ascending") {
-      direction = "descending";
-    }
-    setSortConfig({ key, direction });
-  };
-
-  useMemo(() => {
-    let sortedData = [...data];
-    if (sortedField !== null) {
-      sortedData.sort((a, b) => {
-        if (a[sortConfig.key] < b[sortConfig.key]) {
-          return sortConfig.direction === "ascending" ? -1 : 1;
-        }
-        if (a[sortConfig.key] > b[sortConfig.key]) {
-          return sortConfig.direction === "ascending" ? 1 : -1;
-        }
-        return 0;
-      });
-    }
-    console.log(sortedData);
-    return sortedData;
-  }, [data, sortConfig]);
+  const { items, requestSort } = useSortableData(data);
 
   return (
-    <section className="align-middle inline-block min-w-full shadow overflow-hidden sm:rounded-lg border-b border-gray-200">
-      <table className="min-w-full">
-        <thead>
-          <tr>
-            <TableHeader
-              heading={"address"}
-              onClick={() => requestSort("address")}
-            />
-            <TableHeader
-              heading={"times entered"}
-              onClick={() => requestSort("timesEntered")}
-            />
-            <TableHeader
-              heading={"eth wagered"}
-              onClick={() => requestSort("ethWagered")}
-            />
-            <TableHeader
-              heading={"change of winning"}
-              onClick={() => requestSort("chanceOfWin")}
-            />
-          </tr>
-        </thead>
-        <tbody className="bg-white">
-          {data.map((item, i) => {
-            return (
-              <TableRow
-                key={i}
-                address={item.address}
-                timesEntered={item.timesEntered}
-                ethWagered={item.ethWagered}
-                chanceOfWin={item.chanceOfWin}
+    <>
+      <section className="align-middle inline-block min-w-full shadow overflow-hidden sm:rounded-lg border-b border-gray-200">
+        <table className="min-w-full table-auto">
+          <thead>
+            <tr>
+              <TableHeader
+                heading={"address"}
+                requestSort={requestSort}
+                searchCriteria={"address"}
+                sortIcon={true}
               />
-            );
-          })}
-        </tbody>
-      </table>
-    </section>
+              <TableHeader
+                heading={"times entered"}
+                requestSort={requestSort}
+                searchCriteria={"timesEntered"}
+                sortIcon={true}
+              />
+              <TableHeader
+                heading={"eth wagered"}
+                requestSort={requestSort}
+                searchCriteria={"ethWagered"}
+                sortIcon={true}
+              />
+              <TableHeader
+                heading={"change of winning"}
+                requestSort={requestSort}
+                searchCriteria={"chanceOfWin"}
+                sortIcon={true}
+              />
+              <TableHeader heading={<FiChevronDown />} />
+            </tr>
+          </thead>
+          <tbody className="bg-white">
+            {items.map((item, i) => {
+              return (
+                <TableRow
+                  key={i}
+                  address={item.address}
+                  timesEntered={item.timesEntered}
+                  ethWagered={item.ethWagered}
+                  chanceOfWin={item.chanceOfWin}
+                />
+              );
+            })}
+          </tbody>
+        </table>
+      </section>
+      <div class="container">
+        <table class="w-full flex flex-row flex-no-wrap sm:bg-white rounded-lg overflow-hidden sm:shadow-lg my-5">
+          <thead class="text-white">
+            <tr class="bg-blue-400 flex flex-col flex-no wrap sm:table-row rounded-l-lg sm:rounded-none mb-2 sm:mb-0">
+              <th class="p-3 text-left">Name</th>
+              <th class="p-3 text-left">Email</th>
+              <th class="p-3 text-left">ADDRESS</th>
+              <th class="p-3 text-left" width="110px">
+                Actions
+              </th>
+            </tr>
+            <tr class="bg-blue-400 flex flex-col flex-no wrap sm:table-row rounded-l-lg sm:rounded-none mb-2 sm:mb-0">
+              <th class="p-3 text-left">Name</th>
+              <th class="p-3 text-left">Email</th>
+              <th class="p-3 text-left">ADDRESS</th>
+              <th class="p-3 text-left" width="110px">
+                Actions
+              </th>
+            </tr>
+          </thead>
+          <tbody class="flex-1 sm:flex-none">
+            <tr class="flex flex-col flex-no wrap sm:table-row mb-2 sm:mb-0">
+              <td class="border-grey-light border hover:bg-gray-100 p-3">
+                John Covv
+              </td>
+              <td class="border-grey-light border hover:bg-gray-100 p-3 truncate">
+                contato@johncovv.com
+              </td>
+              <td class="border-grey-light border hover:bg-gray-100 p-3 truncate">
+                getgrhrwhrhrwhwrhwrhrthwrhjjbbje
+              </td>
+              <td class="border-grey-light border hover:bg-gray-100 p-3 text-red-400 hover:text-red-600 hover:font-medium cursor-pointer">
+                Delete
+              </td>
+            </tr>
+            <tr class="flex flex-col flex-no wrap sm:table-row mb-2 sm:mb-0">
+              <td class="border-grey-light border hover:bg-gray-100 p-3">
+                Michael Jackson
+              </td>
+              <td class="border-grey-light border hover:bg-gray-100 p-3 truncate">
+                m_jackson@mail.com
+              </td>
+              <td class="border-grey-light border hover:bg-gray-100 p-3 truncate">
+                jetjetyw5eyvw45ycww4yc4y46v{" "}
+              </td>
+              <td class="border-grey-light border hover:bg-gray-100 p-3 text-red-400 hover:text-red-600 hover:font-medium cursor-pointer">
+                Delete
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </>
   );
 }
