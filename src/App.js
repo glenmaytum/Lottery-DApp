@@ -102,9 +102,11 @@ function App() {
       }
 
       // Getting the uniqueAddresses and number of times each has entered
-      const uniqueAddressesAndTimesEntered = allAddresses.reduce(
-        (acc, curr) => ((acc[curr] = (acc[curr] || 0) + 1), acc),
-        {}
+      const uniqueAddressesAndTimesEntered = Object.entries(
+        allAddresses.reduce(
+          (acc, curr) => ((acc[curr] = (acc[curr] || 0) + 1), acc),
+          {}
+        )
       );
 
       // Listing the number of unique addresses of the entries (the participants total)
@@ -156,7 +158,7 @@ function App() {
   return (
     <>
       <Layout>
-        <Dashboard />
+        <Dashboard entrants={entrantsData} />
       </Layout>
     </>
   );

@@ -5,7 +5,7 @@ import useSortableData from "../hooks/useSortedData";
 import { FiChevronDown } from "react-icons/fi";
 import useCheckIsMobile from "../hooks/checkIfMobile";
 
-export default function UserData() {
+export default function UserData({ entrants }) {
   const data = [
     {
       address: "0x6Cb2498B6a1522BEf2be154198BFE9a2187EE2Ee",
@@ -59,56 +59,78 @@ export default function UserData() {
 
   const isMobile = useCheckIsMobile();
 
+  const {
+    allAddresses,
+    managerAddress,
+    numberOfUniqueAddresses,
+    totalNumberOfEntries,
+    uniqueAddressesAndTimesEntered,
+  } = entrants;
+
+  console.log(uniqueAddressesAndTimesEntered);
+
   const { items, requestSort } = useSortableData(data);
 
   return (
-    <table className="w-full flex flex-row flex-no-wrap sm:bg-white rounded-lg overflow-hidden sm:shadow-lg border-collapse">
-      <thead className="text-white">
-        {items.map((item, i) => {
-          return (
-            <tr className="bg-blue-400 flex flex-col flex-no wrap sm:table-row rounded-l-lg sm:rounded-none mb-2 sm:mb-0">
-              <TableHeader
-                heading={"address"}
-                requestSort={requestSort}
-                searchCriteria={"address"}
-              />
-              <TableHeader
-                heading={"times played "}
-                requestSort={requestSort}
-                searchCriteria={"timesEntered"}
-              />
-              <TableHeader
-                heading={"eth wagered"}
-                requestSort={requestSort}
-                searchCriteria={"ethWagered"}
-              />
-              <TableHeader
-                heading={"Win % "}
-                requestSort={requestSort}
-                searchCriteria={"chanceOfWin"}
-                width={true}
-              />
-            </tr>
-          );
-        })}
-      </thead>
-      <tbody className="flex-1 sm:flex-none ">
-        {items.map((item, i) => {
-          return (
-            <TableRow
-              key={i}
-              address={
-                isMobile
-                  ? item.address.slice(0, 8) + "..." + item.address.slice(-8)
-                  : item.address
-              }
-              timesEntered={item.timesEntered}
-              ethWagered={item.ethWagered}
-              chanceOfWin={item.chanceOfWin}
-            />
-          );
-        })}
-      </tbody>
-    </table>
+    <>
+      {uniqueAddressesAndTimesEntered && (
+        <table className="w-full flex flex-row flex-no-wrap sm:bg-white rounded-lg overflow-hidden sm:shadow-lg border-collapse">
+          <thead className="text-white">
+            {items.map((item, i) => {
+              return (
+                <tr
+                  key={i}
+                  className="bg-blue-400 flex flex-col flex-no wrap sm:table-row rounded-l-lg sm:rounded-none mb-2 sm:mb-0"
+                >
+                  <TableHeader
+                    heading={"address"}
+                    requestSort={requestSort}
+                    searchCriteria={"address"}
+                  />
+                  <TableHeader
+                    heading={"times played "}
+                    requestSort={requestSort}
+                    searchCriteria={"timesEntered"}
+                  />
+                  <TableHeader
+                    heading={"eth wagered"}
+                    requestSort={requestSort}
+                    searchCriteria={"ethWagered"}
+                  />
+                  <TableHeader
+                    heading={"Win % "}
+                    requestSort={requestSort}
+                    searchCriteria={"chanceOfWin"}
+                    width={true}
+                  />
+                </tr>
+              );
+            })}
+          </thead>
+
+          <tbody className="flex-1 sm:flex-none ">
+            {uniqueAddressesAndTimesEntered.map((item, i) => {
+              const address = item[0];
+              const timesEntered = item[1];
+              const ethWagered = timesEntered * 0.1;
+              const chanceToWin = "TEST";
+              return (
+                <TableRow
+                  key={i}
+                  address={
+                    isMobile
+                      ? address.slice(0, 8) + "..." + address.slice(-8)
+                      : address
+                  }
+                  timesEntered={timesEntered}
+                  ethWagered={ethWagered}
+                  chanceOfWin={chanceToWin}
+                />
+              );
+            })}
+          </tbody>
+        </table>
+      )}
+    </>
   );
 }
