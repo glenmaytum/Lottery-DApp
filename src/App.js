@@ -14,6 +14,8 @@ function App() {
     contract: null,
   });
 
+  console.log("WEB3", web3Api);
+
   const [balance, setBalance] = useState(null);
   const [account, setAccount] = useState(null);
   const [entrantsData, setEntrantsData] = useState({
@@ -114,7 +116,7 @@ function App() {
         uniqueAddressesAndTimesEntered
       ).length;
 
-      // Get the address odf the contracts manager
+      // Get the address of the contracts manager
       const managerAddress = await web3Api.contract.manager.call();
 
       setEntrantsData({
