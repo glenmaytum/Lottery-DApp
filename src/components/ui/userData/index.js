@@ -5,7 +5,7 @@ import useSortableData from "../hooks/useSortedData";
 import { FiChevronDown } from "react-icons/fi";
 import useCheckIsMobile from "../hooks/checkIfMobile";
 
-export default function UserData({ entrants }) {
+export default function UserData() {
   const data = [
     {
       address: "0x6Cb2498B6a1522BEf2be154198BFE9a2187EE2Ee",
@@ -59,21 +59,11 @@ export default function UserData({ entrants }) {
 
   const isMobile = useCheckIsMobile();
 
-  const {
-    allAddresses,
-    managerAddress,
-    numberOfUniqueAddresses,
-    totalNumberOfEntries,
-    uniqueAddressesAndTimesEntered,
-  } = entrants;
-
-  console.log(uniqueAddressesAndTimesEntered);
-
   const { items, requestSort } = useSortableData(data);
 
   return (
     <>
-      {uniqueAddressesAndTimesEntered && (
+      {items && (
         <table className="w-full flex flex-row flex-no-wrap sm:bg-white rounded-lg overflow-hidden sm:shadow-lg border-collapse">
           <thead className="text-white">
             {items.map((item, i) => {
@@ -109,7 +99,7 @@ export default function UserData({ entrants }) {
           </thead>
 
           <tbody className="flex-1 sm:flex-none ">
-            {uniqueAddressesAndTimesEntered.map((item, i) => {
+            {items.map((item, i) => {
               const address = item[0];
               const timesEntered = item[1];
               const ethWagered = timesEntered * 0.1;

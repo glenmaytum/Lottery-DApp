@@ -5,6 +5,7 @@ import detectEthereumProvider from "@metamask/detect-provider";
 import { loadContract } from "./utils/load-contract";
 import Layout from "./components/ui/layout";
 import Dashboard from "./components/ui/dashboard";
+import useContractData from "./components/ui/hooks/useContractData";
 
 function App() {
   const [web3Api, setWeb3Api] = useState({
@@ -14,20 +15,7 @@ function App() {
     contract: null,
   });
 
-  console.log("WEB3", web3Api);
-
-  const [balance, setBalance] = useState(null);
   const [account, setAccount] = useState(null);
-  const [entrantsData, setEntrantsData] = useState({
-    managerAddress: "",
-    totalNumberOfEntries: 0,
-    allAddresses: [],
-    numberOfUniqueAddresses: 0,
-    uniqueAddressesAndTimesEntered: 0,
-  });
-
-  // Testing if the current account is the contract's manager or not
-  const isManager = account === entrantsData.managerAddress;
 
   // Reload Helpers
   const [shouldReload, setShouldReload] = useState(false);
@@ -68,18 +56,6 @@ function App() {
     loadProvider();
   }, []);
 
-  // Loading Contract Balance
-  useEffect(() => {
-    const loadBalance = async () => {
-      const { contract, web3 } = web3Api;
-      const balance = await web3.eth.getBalance(contract.address);
-
-      setBalance(web3.utils.fromWei(balance, "ether"));
-    };
-
-    web3Api.contract && loadBalance();
-  }, [web3Api, shouldReload]);
-
   // Getting the current account address
   useEffect(() => {
     const getAccount = async () => {
@@ -90,53 +66,18 @@ function App() {
     web3Api.web3 && getAccount();
   }, [web3Api.web3]);
 
-  // Get entrants data
-  useEffect(() => {
-    const getEntrantsData = async () => {
-      //  Getting the number of entries
-      let totalNumberOfEntries = web3Api.web3.utils.hexToNumber(
-        await web3Api.web3.eth.getStorageAt(web3Api.contract.address)
-      );
+  // Retreiving the contract static and variable data for ease of use
+  const contractData = useContractData(shouldReload, web3Api);
 
-      let allAddresses = []; // Listing all of the address of the entries
-      for (let i = 0; i < totalNumberOfEntries; i++) {
-        allAddresses.push(await web3Api.contract.players.call(i));
-      }
-
-      // Getting the uniqueAddresses and number of times each has entered
-      const uniqueAddressesAndTimesEntered = Object.entries(
-        allAddresses.reduce(
-          (acc, curr) => ((acc[curr] = (acc[curr] || 0) + 1), acc),
-          {}
-        )
-      );
-
-      // Listing the number of unique addresses of the entries (the participants total)
-      const numberOfUniqueAddresses = Object.keys(
-        uniqueAddressesAndTimesEntered
-      ).length;
-
-      // Get the address of the contracts manager
-      const managerAddress = await web3Api.contract.manager.call();
-
-      setEntrantsData({
-        managerAddress,
-        totalNumberOfEntries,
-        allAddresses,
-        numberOfUniqueAddresses,
-        uniqueAddressesAndTimesEntered,
-      });
-    };
-
-    web3Api.web3 && getEntrantsData();
-  }, [web3Api.contract, shouldReload, web3Api.web3]);
+  // Testing if the current account is the contract's manager or not
+  const isManager = account === contractData.managerAddress;
 
   const pickWinner = async () => {
     const { contract } = web3Api;
 
     try {
       const result = await contract.pickWinner({
-        from: entrantsData.managerAddress,
+        from: contractData.managerAddress,
       });
 
       console.log(result);
@@ -160,10 +101,23 @@ function App() {
   return (
     <>
       <Layout>
-        <Dashboard entrants={entrantsData} />
+        <Dashboard {...contractData} />
       </Layout>
     </>
   );
 }
 
 export default App;
+
+//  // Getting the uniqueAddresses and number of times each has entered
+//  const uniqueAddressesAndTimesEntered = Object.entries(
+//   allAddresses.reduce(
+//     (acc, curr) => ((acc[curr] = (acc[curr] || 0) + 1), acc),
+//     {}
+//   )
+// );
+
+// // Listing the number of unique addresses of the entries (the participants total)
+// const numberOfUniqueAddresses = Object.keys(
+//   uniqueAddressesAndTimesEntered
+// ).length;
