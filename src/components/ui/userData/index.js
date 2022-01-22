@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import TableRow from "../../common/table/rows";
 import useSortableData from "../hooks/useSortedData";
 import { FiChevronDown } from "react-icons/fi";
+import useCheckIsMobile from "../hooks/checkIfMobile";
 
 export default function UserData() {
   const data = [
@@ -55,23 +56,13 @@ export default function UserData() {
       chanceOfWin: 33.3,
     },
   ];
-  const [isMobile, setIsMobile] = useState(false);
-  useEffect(() => {
-    window.screen.width <= 760 ? setIsMobile(true) : setIsMobile(false);
-  }, [window.screen.width]);
 
-  function detectWindowSize() {
-    window.innerWidth <= 760 ? setIsMobile(true) : setIsMobile(false);
-  }
-
-  window.onresize = detectWindowSize;
-
-  console.log(isMobile);
+  const isMobile = useCheckIsMobile();
 
   const { items, requestSort } = useSortableData(data);
 
   return (
-    <table className="w-full flex flex-row flex-no-wrap sm:bg-white rounded-lg overflow-hidden sm:shadow-lg my-5 border-collapse">
+    <table className="w-full flex flex-row flex-no-wrap sm:bg-white rounded-lg overflow-hidden sm:shadow-lg border-collapse">
       <thead className="text-white">
         {items.map((item, i) => {
           return (
