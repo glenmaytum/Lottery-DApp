@@ -3,25 +3,28 @@ import Button from "../../common/button";
 import { useWeb3 } from "../../providers";
 
 export default function Header() {
-  const { connect, isWeb3Loaded } = useWeb3();
+  const { connect, isLoading, isWeb3Loaded } = useWeb3();
+
+  // Avoiding the use of _blank as security risk
+  const openInNewTab = (url) => {
+    const newWindow = window.open(url, "_blank", "noopener,noreferrer");
+    if (newWindow) newWindow.opener = null;
+  };
 
   return (
     <header className="bg-white border-b  border-gray-200  px-4 py-5 lg:w-full lg:top-0 lg:left-0 flex justify-end">
-      {isWeb3Loaded ? (
-        <button
-          onClick={connect}
-          className="px-4 py-2 font-semibold text-center text-white rounded-md bg-primary bg-meta-mask-blue hover:bg-blue-500"
-        >
-          Connect Account
-        </button>
+      {isLoading ? (
+        <Button disabled={true} onClick={connect}>
+          Connecting...
+        </Button>
+      ) : isWeb3Loaded ? (
+        <Button onClick={connect}>Connect to Metamask</Button>
       ) : (
-        <button
-          onClick={connect}
-          className="px-4 py-2 font-semibold text-center text-white rounded-md bg-primary bg-meta-mask-blue hover:bg-blue-500"
-        >
+        <Button onClick={() => openInNewTab("https://metamask.io/download/")}>
           Install Metamask
-        </button>
+        </Button>
       )}
     </header>
   );
 }
+// https://metamask.io/download/
