@@ -5,7 +5,7 @@ import detectEthereumProvider from "@metamask/detect-provider";
 import { loadContract } from "./utils/load-contract";
 import Layout from "./components/ui/layout";
 import Dashboard from "./components/ui/dashboard";
-import useContractData from "./components/ui/hooks/useContractData";
+import useContractData from "./components/hooks/utils/useContractData";
 import { useWeb3 } from "./components/providers";
 
 function App() {

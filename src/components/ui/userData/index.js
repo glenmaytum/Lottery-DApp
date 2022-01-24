@@ -1,9 +1,9 @@
 import TableHeader from "../../common/table/headers";
 import { useEffect, useState } from "react";
 import TableRow from "../../common/table/rows";
-import useSortableData from "../hooks/useSortedData";
+import useSortableData from "../../hooks/utils/useSortedData";
 import { FiChevronDown } from "react-icons/fi";
-import useCheckIsMobile from "../hooks/checkIfMobile";
+import useCheckIsMobile from "../../hooks/utils/checkIfMobile";
 
 export default function UserData() {
   const data = [
