@@ -1,12 +1,11 @@
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
 import "./App.css";
-import Web3 from "web3";
-import detectEthereumProvider from "@metamask/detect-provider";
-import { loadContract } from "./utils/load-contract";
-import Layout from "./components/ui/layout";
-import Dashboard from "./components/ui/dashboard";
-import useContractData from "./components/hooks/utils/useContractData";
-import { useWeb3 } from "./components/providers";
+// import Web3 from "web3";
+// import detectEthereumProvider from "@metamask/detect-provider";
+import BaseLayout from "./components/ui/layout/base";
+import DashboardContainer from "./components/ui/dashboard/dashboardContainer";
+// import useContractData from "./components/hooks/utils/useContractData";
+// import { useWeb3 } from "./components/providers";
 
 function App() {
   // const [web3Api, setWeb3Api] = useState({
@@ -101,11 +100,11 @@ function App() {
 
   return (
     <>
-      <Layout>
-        <Dashboard
+      <BaseLayout>
+        <DashboardContainer
         //  {...contractData}
         />
-      </Layout>
+      </BaseLayout>
     </>
   );
 }

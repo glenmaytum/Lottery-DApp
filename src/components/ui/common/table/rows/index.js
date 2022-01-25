@@ -1,11 +1,6 @@
 import Cell from "../cells";
 
-export default function TableRow({
-  address,
-  timesEntered,
-  ethWagered,
-  chanceOfWin,
-}) {
+const TableRow = ({ address, timesEntered, ethWagered, chanceOfWin }) => {
   return (
     <tr className="flex flex-col flex-no wrap sm:table-row mb-2 sm:mb-0 bg-white">
       <Cell cellData={address} />
@@ -14,4 +9,6 @@ export default function TableRow({
       <Cell cellData={chanceOfWin} />
     </tr>
   );
-}
+};
+
+export default TableRow;

@@ -1,12 +1,12 @@
 import React from "react";
 
-export default function Button({
+const Button = ({
   children,
   className,
   hoverable = true,
   variant = "blue",
   ...rest
-}) {
+}) => {
   const variants = {
     blue: `text-white bg-meta-mask-blue ${hoverable && "hover:bg-blue-500"}`,
     red: `text-white bg-red-600 ${hoverable && "hover:bg-red-700"}`,
@@ -20,4 +20,6 @@ export default function Button({
       {children}
     </button>
   );
-}
+};
+
+export default Button;

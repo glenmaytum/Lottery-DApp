@@ -1,8 +1,8 @@
 import { Line } from "rc-progress";
 import ReactTooltip from "react-tooltip";
-import Button from "../../common/button";
+import { Button } from "../../../common/";
 
-export default function AdminControls() {
+const AdminControls = () => {
   let percentComplete = 74;
 
   return (
@@ -19,4 +19,6 @@ export default function AdminControls() {
       <ReactTooltip />
     </section>
   );
-}
+};
+
+export default AdminControls;

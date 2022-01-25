@@ -1,11 +1,11 @@
-import TableHeader from "../../common/table/headers";
+import TableHeader from "../../../common/table/headers";
 import { useEffect, useState } from "react";
-import TableRow from "../../common/table/rows";
-import useSortableData from "../../hooks/utils/useSortedData";
+import TableRow from "../../../common/table/rows";
+import useSortableData from "../../../../hooks/utils/useSortedData";
 import { FiChevronDown } from "react-icons/fi";
-import useCheckIsMobile from "../../hooks/utils/checkIfMobile";
+import useCheckIsMobile from "../../../../hooks/utils/checkIfMobile";
 
-export default function UserData() {
+const UserData = () => {
   const data = [
     {
       address: "0x6Cb2498B6a1522BEf2be154198BFE9a2187EE2Ee",
@@ -123,4 +123,6 @@ export default function UserData() {
       )}
     </>
   );
-}
+};
+
+export default UserData;

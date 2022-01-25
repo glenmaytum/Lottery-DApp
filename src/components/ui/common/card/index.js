@@ -1,6 +1,4 @@
-import React from "react";
-
-export default function Card({ image, display, description }) {
+const Card = ({ image, display, description }) => {
   return (
     <div className=" w-full">
       <div className="py-6 rounded-md bg-white shadow-sm grid grid-row-3 gap-2">
@@ -13,4 +11,6 @@ export default function Card({ image, display, description }) {
       </div>
     </div>
   );
-}
+};
+
+export default Card;

@@ -1,11 +1,12 @@
 import React from "react";
-import Card from "../../common/cards";
-import { ReactComponent as EntriesImg } from "../../../images/entries.svg";
-import { ReactComponent as PlayersImg } from "../../../images/players.svg";
-import { ReactComponent as JackpotImg } from "../../../images/jackpot.svg";
-import { ReactComponent as ProfitImg } from "../../../images/profit.svg";
+import Card from "../../../common/card/index";
 
-export default function StatsSection() {
+import { ReactComponent as EntriesImg } from "../../../../../images/entries.svg";
+import { ReactComponent as PlayersImg } from "../../../../../images/players.svg";
+import { ReactComponent as JackpotImg } from "../../../../../images/jackpot.svg";
+import { ReactComponent as ProfitImg } from "../../../../../images/profit.svg";
+
+const AdminStats = () => {
   return (
     <section className="text-center grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
       <Card image={<EntriesImg />} display={11} description={"Entries"} />
@@ -18,4 +19,6 @@ export default function StatsSection() {
       <Card image={<ProfitImg />} display={"0.1 ETH"} description={"Profit"} />
     </section>
   );
-}
+};
+
+export default AdminStats;
