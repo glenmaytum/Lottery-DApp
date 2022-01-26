@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import detectEthereumProvider from "@metamask/detect-provider";
 import Web3 from "web3";
 import { setupHooks } from "./hooks/setupHooks";
+import { loadContract } from "../../../utils/loadContract";
 
 // Creating the context
 const Web3Context = createContext(null);
@@ -18,14 +19,18 @@ export default function Web3Provider({ children }) {
 
   useEffect(() => {
     // // Get the eth provider (Web3)
+
     const loadProvider = async () => {
       const provider = await detectEthereumProvider();
       if (provider) {
         const web3 = new Web3(provider);
+        // Getting the instance of the contract from loadContract in utils
+        const contract = await loadContract("Lottery", web3);
+
         setWeb3Api({
           provider,
           web3,
-          contract: null,
+          contract,
           isLoading: false,
           hooks: setupHooks(web3, provider), //Calleing the hooks with the required dependencies
         });
@@ -47,7 +52,7 @@ export default function Web3Provider({ children }) {
     // + getHooks which runs setUpHooks
     // connect (returns your account)
     return {
-      ...web3Api, // spead in existing web3Api
+      ...web3Api, // spread in existing web3Api
       requireInstall: !isLoading && !web3, // If these are false then must not have metamask
       connect: provider
         ? async () => {
