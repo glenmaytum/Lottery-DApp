@@ -15,7 +15,6 @@ const Header = () => {
   const { account } = useAccount();
   const { network } = useNetwork();
 
-  console.log(contract);
   return (
     <header className="bg-white border-b  border-gray-200  px-4 py-5 lg:w-full lg:top-0 lg:left-0 flex justify-end">
       <StatusBar

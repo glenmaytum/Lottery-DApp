@@ -23,8 +23,10 @@ contract Lottery{
         players.push(payable(msg.sender));
     }
     
+    // Can probably remove this
     // returning the contract's balance in wei
     function getBalance() public view returns(uint){
+
         // only the manager is allowed to call it
         // require(msg.sender == manager);
         return address(this).balance;

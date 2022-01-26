@@ -13,6 +13,7 @@ export default function Web3Provider({ children }) {
     provider: null,
     web3: null,
     contract: null,
+    allAddresses: null,
     isLoading: true,
     hooks: setupHooks(), //bringing in hooks like setupNetwork and useAccount
   });
@@ -27,10 +28,21 @@ export default function Web3Provider({ children }) {
         // Getting the instance of the contract from loadContract in utils
         const contract = await loadContract("Lottery", web3);
 
+        let totalNumberOfEntries = web3.utils.hexToNumber(
+          await web3.eth.getStorageAt(contract._address)
+        );
+
+        let allAddresses = [];
+
+        for (let i = 0; i < totalNumberOfEntries; i++) {
+          allAddresses.push(await contract.methods.players(i).call());
+        }
+
         setWeb3Api({
           provider,
           web3,
           contract,
+          allAddresses,
           isLoading: false,
           hooks: setupHooks(web3, provider), //Calleing the hooks with the required dependencies
         });

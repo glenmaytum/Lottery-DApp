@@ -35,3 +35,6 @@ How often Each address has entered - Calculated
 How much eth each address has put down - Calculated
 Chances of each address winning - Calculated
 
+
+// Put spinners on stats so it doesn't show undefined before load, maybeneed to check network as well?
+
