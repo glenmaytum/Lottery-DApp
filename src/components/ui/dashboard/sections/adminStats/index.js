@@ -5,58 +5,40 @@ import { ReactComponent as PlayersImg } from "../../../../../images/players.svg"
 import { ReactComponent as JackpotImg } from "../../../../../images/jackpot.svg";
 import { ReactComponent as ProfitImg } from "../../../../../images/profit.svg";
 import { useWeb3 } from "../../../../providers/";
+import useContractData from "../../../../hooks/utils/manipulateAddresses";
 
 const AdminStats = () => {
-  const { allAddresses } = useWeb3();
-  const [stats, setStats] = useState({});
+  const { allContractData, allAddressesLoaded } = useWeb3();
 
-  useEffect(() => {
-    // Getting the uniqueAddresses and number of times each has entered
-    const setStatsFunc = () => {
-      const numEntries = Object.keys(allAddresses).length;
-      const uniqueAddrsWithTally = Object.entries(
-        allAddresses.reduce(
-          (acc, curr) => ((acc[curr] = (acc[curr] || 0) + 1), acc),
-          {}
-        )
-      );
-      const players = Object.keys(uniqueAddrsWithTally).length;
+  const { totalEntries, players, jackpot, profit } = allContractData;
 
-      const jackpot = numEntries * 0.1;
-      const profit = (jackpot * 0.05).toFixed(3);
-
-      setStats({
-        numEntries,
-        uniqueAddrsWithTally,
-        players,
-        jackpot,
-        profit,
-      });
-    };
-
-    allAddresses && setStatsFunc();
-  }, [allAddresses]);
+  let type = allAddressesLoaded;
+  console.log(type);
 
   return (
     <section className="text-center grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
       <Card
         image={<EntriesImg />}
-        display={stats.numEntries}
+        display={totalEntries}
+        dataLoaded={type}
         description={"Entries"}
       />
       <Card
         image={<PlayersImg />}
-        display={stats.players}
+        display={players}
+        dataLoaded={type}
         description={"Players"}
       />
       <Card
         image={<JackpotImg />}
-        display={`${stats.jackpot} ETH`}
+        display={`${jackpot} ETH`}
+        dataLoaded={type}
         description={"Jackpot"}
       />
       <Card
         image={<ProfitImg />}
-        display={`${stats.profit} ETH`}
+        display={`${profit} ETH`}
+        dataLoaded={type}
         description={"Profit"}
       />
     </section>

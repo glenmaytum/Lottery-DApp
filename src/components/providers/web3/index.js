@@ -3,6 +3,7 @@ import detectEthereumProvider from "@metamask/detect-provider";
 import Web3 from "web3";
 import { setupHooks } from "./hooks/setupHooks";
 import { loadContract } from "../../../utils/loadContract";
+import manipulateAddresses from "../../hooks/utils/manipulateAddresses";
 
 // Creating the context
 const Web3Context = createContext(null);
@@ -14,6 +15,19 @@ export default function Web3Provider({ children }) {
     web3: null,
     contract: null,
     allAddresses: null,
+    allAddressesLoaded: false,
+    allContractData: {
+      jackpot: 0,
+      totalEntries: 0,
+      players: 0,
+      profit: 0,
+      individualEntryData: {
+        address: "",
+        timesEntered: 0,
+        ethWagered: 0,
+        roundedChanceOfWin: 0,
+      },
+    },
     isLoading: true,
     hooks: setupHooks(), //bringing in hooks like setupNetwork and useAccount
   });
@@ -33,16 +47,24 @@ export default function Web3Provider({ children }) {
         );
 
         let allAddresses = [];
+        let allAddressesLoaded = false;
 
         for (let i = 0; i < totalNumberOfEntries; i++) {
           allAddresses.push(await contract.methods.players(i).call());
+          if (i === totalNumberOfEntries - 1) {
+            allAddressesLoaded = true;
+          }
         }
+
+        let allContractData = manipulateAddresses(allAddresses);
 
         setWeb3Api({
           provider,
           web3,
           contract,
+          allAddressesLoaded,
           allAddresses,
+          allContractData,
           isLoading: false,
           hooks: setupHooks(web3, provider), //Calleing the hooks with the required dependencies
         });
