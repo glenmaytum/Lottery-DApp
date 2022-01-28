@@ -21,6 +21,7 @@ export default function Web3Provider({ children }) {
       totalEntries: 0,
       players: 0,
       profit: 0,
+      percentComplete: 0,
       individualEntryData: [
         {
           address: "",
@@ -68,7 +69,7 @@ export default function Web3Provider({ children }) {
           allAddresses,
           allContractData,
           isLoading: false,
-          hooks: setupHooks(web3, provider), //Calleing the hooks with the required dependencies
+          hooks: setupHooks(web3, provider, contract), //Calleing the hooks with the required dependencies
         });
       } else {
         setWeb3Api((api) => ({ ...api, isLoading: false }));

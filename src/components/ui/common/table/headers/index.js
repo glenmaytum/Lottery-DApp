@@ -1,12 +1,6 @@
-import { BiSortAlt2, BiSortDown, BiSortUp } from "react-icons/bi";
+import { BiSortAlt2 } from "react-icons/bi";
 
-const TableHeader = ({
-  heading,
-  requestSort,
-  searchCriteria,
-  sortIcon,
-  width,
-}) => {
+const TableHeader = ({ heading, requestSort, searchCriteria }) => {
   return (
     <th
       className={`p-3 text-left min-w-min heightFix cursor-pointer`}

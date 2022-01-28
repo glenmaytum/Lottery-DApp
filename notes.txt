@@ -22,19 +22,4 @@ test if git works properly now
 
 What info I need
 
-Contract address - Returned
-Admin address - Returned
-Eth Jackpot - Returned
-Each unique address - Returned
-
-
-Number of entries - Calculated
-Number of Unique players - Calculated
-My amount of profit - Calculated
-How often Each address has entered - Calculated
-How much eth each address has put down - Calculated
-Chances of each address winning - Calculated
-
-
-// Put spinners on stats so it doesn't show undefined before load, maybeneed to check network as well?
-
+Have default stats be 0 instead of spinners

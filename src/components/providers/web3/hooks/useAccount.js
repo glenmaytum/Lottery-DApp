@@ -1,18 +1,31 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useSWR from "swr";
 
 // Consider hashing the manager function on contract
 // it is now 2nd ganache account
-const adminAddresses = {
-  "0x8e49d7d2d6b684aa17a5cfbe145350f65f87056e50cf6621b2c7112cd1c76d76": true,
-};
+// const adminAddresses = {
+//   "0x8e49d7d2d6b684aa17a5cfbe145350f65f87056e50cf6621b2c7112cd1c76d76": true,
+// };
 
 // 0x4DA5635B18E32974098DB1D194679C4a86aa7Ae5
 
 // const managerAddress = await web3Api.contract.manager.call();
 
 // uses swr to return the account
-export const handler = (web3, provider) => () => {
+
+export const handler = (web3, provider, contract) => () => {
+  const [managerAddress, setManagerAddress] = useState();
+
+  useEffect(() => {
+    const getManager = () => {
+      contract.methods
+        .manager()
+        .call()
+        .then((result) => setManagerAddress(result));
+    };
+    contract && getManager();
+  }, [contract]);
+
   const { data, mutate, ...rest } = useSWR(
     // The SWR response "data" (destructured above) is where the callback return will be stored
     () =>
@@ -34,7 +47,9 @@ export const handler = (web3, provider) => () => {
   // returns object with the data, checks if is admin
   return {
     data,
-    isAdmin: (data && adminAddresses[web3.utils.keccak256(data)]) ?? false,
+    managerAddress,
+    isAdmin: data && data === managerAddress,
+    managerAddress,
     mutate,
     ...rest,
   };

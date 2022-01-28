@@ -43,7 +43,6 @@ const UserData = () => {
                       heading={"Win % "}
                       requestSort={requestSort}
                       searchCriteria={"roundedChanceOfWin"}
-                      width={true}
                     />
                   </tr>
                 );
