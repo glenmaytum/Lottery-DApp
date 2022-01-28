@@ -1,6 +1,3 @@
-import { useState, useMemo, useEffect } from "react";
-import { useWeb3 } from "../../providers";
-
 const manipulateAddresses = (allAddresses) => {
   let _allAddresses = [...allAddresses];
   let uniqueAddressesAndTimesEntered = Object.entries(
@@ -10,16 +7,17 @@ const manipulateAddresses = (allAddresses) => {
     )
   );
   let jackpot = roundNumber(
-    uniqueAddressesAndTimesEntered.reduce((prev, next) => prev + next[1], 0)
+    uniqueAddressesAndTimesEntered.reduce((prev, next) => prev + next[1], 0) *
+      0.1
   );
   let players = uniqueAddressesAndTimesEntered.length;
   let totalEntries = _allAddresses.length;
-  let profit = (jackpot * 0.05).toFixed(3);
+  let profit = Number((jackpot * 0.05).toFixed(3));
   let individualEntryData = uniqueAddressesAndTimesEntered.map((entry) => {
     const address = entry[0];
     const timesEntered = entry[1];
     const ethWagered = roundNumber(timesEntered * 0.1);
-    const chanceOfWin = (ethWagered * 100) / jackpot;
+    const chanceOfWin = Number(((ethWagered * 100) / jackpot).toFixed(1));
     const roundedChanceOfWin = roundNumber(chanceOfWin);
 
     return {

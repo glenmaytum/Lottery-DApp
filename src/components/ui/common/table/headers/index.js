@@ -9,10 +9,13 @@ const TableHeader = ({
 }) => {
   return (
     <th
-      className={`p-3 text-left min-w-min heightFix`}
+      className={`p-3 text-left min-w-min heightFix cursor-pointer`}
       onClick={() => requestSort(searchCriteria)}
     >
-      {heading}
+      <span className="flex">
+        <BiSortAlt2 className="self-center" />
+        {heading}
+      </span>
     </th>
   );
 };

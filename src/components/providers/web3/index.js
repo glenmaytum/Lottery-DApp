@@ -21,12 +21,14 @@ export default function Web3Provider({ children }) {
       totalEntries: 0,
       players: 0,
       profit: 0,
-      individualEntryData: {
-        address: "",
-        timesEntered: 0,
-        ethWagered: 0,
-        roundedChanceOfWin: 0,
-      },
+      individualEntryData: [
+        {
+          address: "",
+          timesEntered: 0,
+          ethWagered: 0,
+          roundedChanceOfWin: 0,
+        },
+      ],
     },
     isLoading: true,
     hooks: setupHooks(), //bringing in hooks like setupNetwork and useAccount
@@ -56,7 +58,7 @@ export default function Web3Provider({ children }) {
           }
         }
 
-        let allContractData = manipulateAddresses(allAddresses);
+        let allContractData = manipulateAddresses(allAddresses); //Manipulating the qaddresses to get display data
 
         setWeb3Api({
           provider,

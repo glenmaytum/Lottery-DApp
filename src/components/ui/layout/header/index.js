@@ -11,7 +11,7 @@ const openInNewTab = (url) => {
 };
 
 const Header = () => {
-  const { connect, isLoading, requireInstall, contract } = useWeb3();
+  const { connect, isLoading, requireInstall } = useWeb3();
   const { account } = useAccount();
   const { network } = useNetwork();
 
