@@ -8,7 +8,7 @@ import { Line } from "rc-progress";
 import ReactTooltip from "react-tooltip";
 
 const AdminStats = () => {
-  const { allContractData, allAddressesLoaded } = useWeb3();
+  const { allContractData, allAddressesLoaded, isLoading } = useWeb3();
   const { totalEntries, players, jackpot, profit, percentComplete } =
     allContractData;
 
@@ -32,25 +32,25 @@ const AdminStats = () => {
         <Card
           image={<EntriesImg />}
           display={totalEntries}
-          dataLoaded={allAddressesLoaded}
+          dataLoaded={isLoading}
           description={"Entries"}
         />
         <Card
           image={<PlayersImg />}
           display={players}
-          dataLoaded={allAddressesLoaded}
+          dataLoaded={isLoading}
           description={"Players"}
         />
         <Card
           image={<JackpotImg />}
           display={`${jackpot} ETH`}
-          dataLoaded={allAddressesLoaded}
+          dataLoaded={isLoading}
           description={"Jackpot"}
         />
         <Card
           image={<ProfitImg />}
           display={`${profit} ETH`}
-          dataLoaded={allAddressesLoaded}
+          dataLoaded={isLoading}
           description={"Profit"}
         />
       </div>
